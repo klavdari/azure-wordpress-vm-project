@@ -17,7 +17,7 @@ This project demonstrates the process of provisioning a cloud infrastructure fro
 ## Architecture Diagram
 Here is the architecture of the final deployed application. It outlines the flow of traffic from the end-user through the Azure network components to the virtual machine hosting the WordPress site.
 
-![Project Architecture Diagram](link)
+![Project Architecture Diagram](assets/WordPress-StartingDiagram.jpg)
 
 ## Installation Steps
 
@@ -64,4 +64,4 @@ Here is the architecture of the final deployed application. It outlines the flow
   ```
 
 ## Final Result
-![WordPress site](link)
+![WordPress site](assets/wordpress-live-site.PNG)

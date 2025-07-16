@@ -13,11 +13,14 @@ This project demonstrates the process of provisioning a cloud infrastructure fro
 - **Web Stack** : Apache2 (Web Server), MySQL (Database), PHP
 - **Application** : WordPress (Content Management System)
 - **Security** : Firewall rule configuration (SSH, HTTP, HTTPS), user/password administration
+- **DNS & Domain Management**
+- **SSL/TLS Security** : Let's Encrypt, Certbot
+- **Web Server Configuration** : Apache Virtual Hosts
 
 ## Architecture Diagram
 Here is the architecture of the final deployed application. It outlines the flow of traffic from the end-user through the Azure network components to the virtual machine hosting the WordPress site.
 
-![Project Architecture Diagram](assets/WordPress-StartingDiagram.jpg)
+![Project Architecture Diagram](assets/MyWordPressApp-Second-Phase.jpg)
 
 ## Installation Steps
 
@@ -62,6 +65,23 @@ Here is the architecture of the final deployed application. It outlines the flow
   ```bash
   sudo systemctl restart apache2
   ```
+- **Securing the Site with a Custom Domain and SSL**
+  - *Configured DNS* : Created two "A" records in my domain name registrar's control panel to point ![krisel.xyz](krisel.xyz) and![www.krisel.xyz](www.krisel.xyz) to the server public IP address.
+  - *Created Apache Virtual Host*
+    - To make Apache aware of the new domain, I created the following configuration file:
+      ```bash
+      sudo nano /etc/apache2/sites-available/krisel.xyz.conf
+      ```
+      - *Virtual Host file*
+        ```Apache
+        <VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        ServerName krisel.xyz
+        ServerAlias www.krisel.xyz
+        DocumentRoot /var/www/html
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+        </VirtualHost>
 
 ## Final Result
-![WordPress site](assets/wordpress-live-site.PNG)
+![WordPress site](assets/wordpress-live-domain-name.PNG)

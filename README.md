@@ -16,11 +16,14 @@ This project demonstrates the process of provisioning a cloud infrastructure fro
 - **DNS & Domain Management**
 - **SSL/TLS Security** : Let's Encrypt, Certbot
 - **Web Server Configuration** : Apache Virtual Hosts
+- **Platform as a Service (PaaS)** : Azure Database for MySQL
+- **Cloud Architecture** : Multi-tier application design
+- **Data Migration** : Exporting and importing a database ```mysqldump```
 
 ## Architecture Diagram
 Here is the architecture of the final deployed application. It outlines the flow of traffic from the end-user through the Azure network components to the virtual machine hosting the WordPress site.
 
-![Project Architecture Diagram](assets/MyWordPressApp-Second-Phase.jpg)
+![Project Architecture Diagram](assets/MyWordPressApp-Third-Phase.jpg)
 
 ## Installation Steps
 
@@ -82,6 +85,15 @@ Here is the architecture of the final deployed application. It outlines the flow
         ErrorLog ${APACHE_LOG_DIR}/error.log
         CustomLog ${APACHE_LOG_DIR}/access.log combined
         </VirtualHost>
+
+## Modernizing the Architecture with a Managed Database
+To improve scalability and reliability, the application was refactored into a multi-tier architecture. The database was migrated from the local MySQL server on the VM to a fully managed **Azure Database for MySQL** PaaS.
+
+**Steps included** :
+   - Provisioning a new Azure Database for MySQL flexible server
+   - Configuring network firewall rules to allow a secure connection from the VM
+   - Performing a database migration by exporting the original data with ```mysqldump``` and importing it into the new managed database
+   - Reconfiguring the WordPress ```wp-config.php``` file to point to the new database endpoint and require an SSL connection
 
 ## Final Result
 ![WordPress site](assets/wordpress-live-domain-name.PNG)

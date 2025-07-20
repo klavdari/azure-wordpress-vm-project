@@ -19,11 +19,14 @@ This project demonstrates the process of provisioning a cloud infrastructure fro
 - **Platform as a Service (PaaS)** : Azure Database for MySQL
 - **Cloud Architecture** : Multi-tier application design
 - **Data Migration** : Exporting and importing a database ```mysqldump```
+- **High availability & Load Balancing**
+- **Scalability**
+- **Shared Storage**
 
 ## Architecture Diagram
 Here is the architecture of the final deployed application. It outlines the flow of traffic from the end-user through the Azure network components to the virtual machine hosting the WordPress site.
 
-![Project Architecture Diagram](assets/MyWordPressApp-Third-Phase.jpg)
+![Project Architecture Diagram](assets/MyWordPressApp-Fourth-Phase.jpg)
 
 ## Installation Steps
 
@@ -94,6 +97,22 @@ To improve scalability and reliability, the application was refactored into a mu
    - Configuring network firewall rules to allow a secure connection from the VM
    - Performing a database migration by exporting the original data with ```mysqldump``` and importing it into the new managed database
    - Reconfiguring the WordPress ```wp-config.php``` file to point to the new database endpoint and require an SSL connection
+
+## Creating the second VM
+   - Creating a script ```setup-webserver.sh``` that will update the server, install Apache and PHP and remove the default home page.
+     ```bash
+     #!/bin/bash
+     sudo apt update
+     sudo apt install apache2 php libapache2-mod-php php-mysql -y
+     sudo rm /var/www/html/index.html```
+   - We follow the steps as we did for the first VM and we insert the custom script at the end
+
+## High Availability and Load Balancing
+To ensure the application is resilient and can handle more traffic, an Azure Load Balancer was deployed and configured with the following components:
+   - Frontend IP Configuration: A new static public IP was created and assigned to the load balancer to act as the single entry point for all web traffic.
+   - Backend Pool: Both virtual machines (MyWordPressVM and MyWordPressVM2) were added to the backend pool, making them available to receive traffic from the load balancer.
+   - Health Probe: An HTTP health probe was configured to monitor port 80 on the VMs, allowing the load balancer to automatically detect if a server is unhealthy and stop sending traffic to it.
+   - Load Balancing Rule: A rule was created to forward all incoming traffic on port 80 (HTTP) to the VMs in the backend pool.
 
 ## Final Result
 ![WordPress site](assets/wordpress-live-domain-name.PNG)
